@@ -1,7 +1,7 @@
 package ca.graemehill.synctool;
 
 import ca.graemehill.synctool.model.FileMetadata;
-import ca.graemehill.synctool.model.Policy;
+import ca.graemehill.synctool.model.NodeCollection;
 
 import java.sql.*;
 
@@ -14,16 +14,16 @@ public class Metadatabase implements AutoCloseable {
         //conn.setAutoCommit(true);
     }
 
-    public void put(Policy policy) throws SQLException {
+    public void put(NodeCollection nc) throws SQLException {
         runParameterizedCmd(
-            "INSERT OR REPLACE INTO policies (id, sourceNode, destinationNode, sourcePath, destinationPath) " +
+            "INSERT OR REPLACE INTO node_collections (id, sourceNode, destinationNode, sourcePath, destinationPath) " +
                 "VALUES (?, ?, ?, ?, ?)",
             statement -> {
-                statement.setString(1, policy.getId().toString());
-                statement.setString(2, policy.getSourceNode().toString());
-                statement.setString(3, policy.getDestinationNode().toString());
-                statement.setString(4, policy.getSourcePath());
-                statement.setString(5, policy.getDestinationPath());
+                statement.setString(1, nc.getId().toString());
+                statement.setString(2, nc.getSourceNode().toString());
+                statement.setString(3, nc.getDestinationNode().toString());
+                statement.setString(4, nc.getSourcePath());
+                statement.setString(5, nc.getDestinationPath());
             }
         );
         conn.commit();
@@ -65,34 +65,33 @@ public class Metadatabase implements AutoCloseable {
 
         String migration1 =
             "CREATE TABLE nodes (" +
-                "id TEXT PRIMARY KEY," +
-                "name TEXT);" +
+                "id TEXT NOT NULL PRIMARY KEY," +
+                "name TEXT NOT NULL);\n" +
+
             "CREATE TABLE file_metadatas (" +
                 "version INT PRIMARY KEY AUTOINCREMENT NOT NULL," +
                 "name TEXT NOT NULL," +
                 "dir TEXT NOT NULL," +
                 "created INT NOT NULL," +
                 "modified INT NOT NULL," +
-                "checksum TEXT NOT NULL);" +
+                "checksum TEXT NOT NULL);\n" +
+
             "CREATE TABLE collections (" +
                 "id TEXT PRIMARY KEY NOT NULL," +
-                "name TEXT NOT NULL);" +
+                "name TEXT NOT NULL);\n" +
+
             "CREATE TABLE node_collections (" +
+                "id TEXT NOT NULL PRIMARY KEY," +
                 "node TEXT NOT NULL," +
                 "collection TEXT NOT NULL," +
-                "path TEXT NOT NULL);" +
-            "CREATE TABLE policies (" +
-                "id TEXT PRIMARY KEY," +
-                "sourceNode TEXT," +
-                "destinationNode TEXT," +
-                "sourcePath TEXT," +
-                "destinationPath TEXT);" +
+                "path TEXT NOT NULL);\n" +
+
             "CREATE TABLE transfers (" +
-                "policy TEXT," +
-                "sourceNode TEXT," +
-                "destinationNode TEXT," +
+                "node_collection TEXT," +
+                "source_node TEXT," +
+                "destination_node TEXT," +
                 "version INT," +
-                "finished TEXT);";
+                "finished TEXT);\n";
 
         runMigrations(new Migration[] {
             new Migration(1, migration1)
