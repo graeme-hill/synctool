@@ -16,14 +16,12 @@ public class Metadatabase implements AutoCloseable {
 
     public void put(NodeCollection nc) throws SQLException {
         runParameterizedCmd(
-            "INSERT OR REPLACE INTO node_collections (id, sourceNode, destinationNode, sourcePath, destinationPath) " +
-                "VALUES (?, ?, ?, ?, ?)",
+            "INSERT OR REPLACE INTO node_collections (id, node, collection, path) VALUES (?, ?, ?, ?)",
             statement -> {
                 statement.setString(1, nc.getId().toString());
-                statement.setString(2, nc.getSourceNode().toString());
-                statement.setString(3, nc.getDestinationNode().toString());
-                statement.setString(4, nc.getSourcePath());
-                statement.setString(5, nc.getDestinationPath());
+                statement.setString(2, nc.getNode().toString());
+                statement.setString(3, nc.getCollection().toString());
+                statement.setString(4, nc.getPath());
             }
         );
         conn.commit();
