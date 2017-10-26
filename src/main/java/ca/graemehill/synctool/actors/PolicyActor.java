@@ -1,6 +1,8 @@
-package ca.graemehill.synctool;
+package ca.graemehill.synctool.actors;
 
 import akka.actor.AbstractActor;
+import ca.graemehill.synctool.Log;
+import ca.graemehill.synctool.Database;
 import ca.graemehill.synctool.model.NodeCollection;
 
 public class PolicyActor extends AbstractActor {
@@ -14,7 +16,7 @@ public class PolicyActor extends AbstractActor {
 
     private void putNodeCollection(PutNodeCollection msg) {
         try {
-            try (Metadatabase db = new Metadatabase()) {
+            try (Database db = new Database()) {
                 db.put(msg.getNodeCollection());
             }
         } catch (Exception e) {

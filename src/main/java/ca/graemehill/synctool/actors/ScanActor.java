@@ -1,9 +1,12 @@
-package ca.graemehill.synctool;
+package ca.graemehill.synctool.actors;
 
 import akka.actor.AbstractActor;
 import akka.actor.ActorRef;
 import akka.actor.Props;
+import ca.graemehill.synctool.Log;
+import ca.graemehill.synctool.Sys;
 import ca.graemehill.synctool.model.FileMetadata;
+import ca.graemehill.synctool.model.NodeCollection;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -13,14 +16,14 @@ import java.nio.file.Path;
 import java.nio.file.attribute.BasicFileAttributes;
 
 public class ScanActor extends AbstractActor {
-    private ActorRef fileDiscoveredActor;
+    private ActorRef fileMetadataActor;
 
     public static Props props() {
         return Props.create(ScanActor.class);
     }
 
     public ScanActor() {
-        fileDiscoveredActor = Sys.getActorSystem().actorOf(FileMetadataActor.props());
+        fileMetadataActor = Sys.getActorSystem().actorOf(FileMetadataActor.props());
     }
 
     @Override
@@ -37,9 +40,9 @@ public class ScanActor extends AbstractActor {
 
     private void scan(ScanRequest req) {
         try {
-            scan(req.getDirectory(), req.getDepth());
+            scan(req.getNodeCollection().getPath(), -1);
         } catch (FileNotFoundException e) {
-            Log.error("Could not scan " + req.getDirectory() + " because it doesn't exist.");
+            Log.error("Could not scan " + req.getNodeCollection().getPath() + " because it doesn't exist.");
         }
     }
 
@@ -81,9 +84,43 @@ public class ScanActor extends AbstractActor {
                 attrs.creationTime().toMillis(),
                 attrs.lastModifiedTime().toMillis(),
                 null);
-            fileDiscoveredActor.tell(new FileDiscovered(metadata), getSelf());
+            fileMetadataActor.tell(new FileMetadataActor.FileDiscovered(metadata), getSelf());
         } catch (IOException e) {
             Log.error("consumeFile failed for path " + path.toString(), e);
         }
     }
+
+    public static class ScanRequest {
+        private NodeCollection nodeCollection;
+
+        public ScanRequest(NodeCollection nodeCollection) {
+            this.nodeCollection = nodeCollection;
+        }
+
+        public NodeCollection getNodeCollection() {
+            return nodeCollection;
+        }
+    }
+
+//    public static class ScanRequest_ {
+//        private String directory;
+//        private int depth;
+//
+//        public ScanRequest(String directory) {
+//            this(directory, -1);
+//        }
+//
+//        public ScanRequest(String directory, int depth) {
+//            this.directory = directory;
+//            this.depth = depth;
+//        }
+//
+//        public String getDirectory() {
+//            return directory;
+//        }
+//
+//        public int getDepth() {
+//            return depth;
+//        }
+//    }
 }

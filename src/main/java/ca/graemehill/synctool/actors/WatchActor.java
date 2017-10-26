@@ -1,6 +1,7 @@
-package ca.graemehill.synctool;
+package ca.graemehill.synctool.actors;
 
 import akka.actor.AbstractActor;
+import ca.graemehill.synctool.Log;
 
 public class WatchActor extends AbstractActor {
     private static Watcher watcher = new Watcher();

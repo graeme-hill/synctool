@@ -1,8 +1,11 @@
-package ca.graemehill.synctool;
+package ca.graemehill.synctool.actors;
 
 import akka.actor.AbstractActor;
 import akka.actor.ActorRef;
 import akka.actor.Props;
+import ca.graemehill.synctool.Log;
+import ca.graemehill.synctool.Database;
+import ca.graemehill.synctool.Sys;
 import ca.graemehill.synctool.model.FileMetadata;
 
 public class FileMetadataActor extends AbstractActor {
@@ -27,11 +30,11 @@ public class FileMetadataActor extends AbstractActor {
 
     private void onFileDiscovered(FileMetadata newMetadata) {
         try {
-            try (Metadatabase db = new Metadatabase()) {
+            try (Database db = new Database()) {
                 FileMetadata existingMetadata = db.getFileMetadata(newMetadata.getName(), newMetadata.getDir());
                 if (!closeEnough(existingMetadata, newMetadata)) {
                     db.replaceFileMetadata(newMetadata);
-                    syncActor.tell(new FileReadyToSync(newMetadata), getSelf());
+                    syncActor.tell(new SyncActor.FileReadyToSync(newMetadata), getSelf());
                 }
             }
         } catch (Exception e) {
@@ -57,5 +60,17 @@ public class FileMetadataActor extends AbstractActor {
 
     public static Props props() {
         return Props.create(FileMetadataActor.class);
+    }
+
+    public static class FileDiscovered {
+        private FileMetadata metadata;
+
+        public FileDiscovered(FileMetadata metadata) {
+            this.metadata = metadata;
+        }
+
+        public FileMetadata getMetadata() {
+            return metadata;
+        }
     }
 }

@@ -1,7 +1,9 @@
-package ca.graemehill.synctool;
+package ca.graemehill.synctool.actors;
 
 import akka.actor.AbstractActor;
 import akka.actor.Props;
+import ca.graemehill.synctool.Log;
+import ca.graemehill.synctool.model.FileMetadata;
 
 public class SyncActor extends AbstractActor {
     @Override
@@ -18,5 +20,17 @@ public class SyncActor extends AbstractActor {
 
     public static Props props() {
         return Props.create(SyncActor.class);
+    }
+
+    public static class FileReadyToSync {
+        private FileMetadata fileMetadata;
+
+        public FileReadyToSync(FileMetadata fileMetadata) {
+            this.fileMetadata = fileMetadata;
+        }
+
+        public FileMetadata getFileMetadata() {
+            return fileMetadata;
+        }
     }
 }

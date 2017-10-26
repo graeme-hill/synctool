@@ -2,15 +2,13 @@ package ca.graemehill.synctool.model;
 
 import java.util.UUID;
 
-public class Node {
+public class Collection {
     private UUID id;
     private String name;
-    private boolean isMe;
 
-    public Node(UUID id, String name, boolean isMe) {
+    public Collection(UUID id, String name) {
         this.id = id;
         this.name = name;
-        this.isMe = isMe;
     }
 
     public UUID getId() {
@@ -19,9 +17,5 @@ public class Node {
 
     public String getName() {
         return name;
-    }
-
-    public boolean isMe() {
-        return isMe;
     }
 }

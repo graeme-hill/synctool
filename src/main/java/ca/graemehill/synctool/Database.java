@@ -1,17 +1,21 @@
 package ca.graemehill.synctool;
 
+import ca.graemehill.synctool.model.Collection;
 import ca.graemehill.synctool.model.FileMetadata;
+import ca.graemehill.synctool.model.Node;
 import ca.graemehill.synctool.model.NodeCollection;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.UUID;
 
-public class Metadatabase implements AutoCloseable {
+public class Database implements AutoCloseable {
 
     private Connection conn;
 
-    public Metadatabase() throws SQLException {
+    public Database() throws SQLException {
         conn = DriverManager.getConnection(Sys.getConnectionString());
-        //conn.setAutoCommit(true);
+        conn.setAutoCommit(false);
     }
 
     public void put(NodeCollection nc) throws SQLException {
@@ -22,6 +26,17 @@ public class Metadatabase implements AutoCloseable {
                 statement.setString(2, nc.getNode().toString());
                 statement.setString(3, nc.getCollection().toString());
                 statement.setString(4, nc.getPath());
+            }
+        );
+        conn.commit();
+    }
+
+    public void put(Collection c) throws SQLException {
+        runParameterizedCmd(
+            "INSERT OR REPLACE INTO collections (id, name) VALUES (?, ?)",
+            statement -> {
+                statement.setString(1, c.getId().toString());
+                statement.setString(2, c.getName());
             }
         );
         conn.commit();
@@ -38,20 +53,50 @@ public class Metadatabase implements AutoCloseable {
                 statement.setLong(5, file.getModified());
             }
         );
+        conn.commit();
     }
 
-    public static boolean tryMigrate() {
+    public void put(Node node) throws SQLException {
+        runParameterizedCmd(
+            "INSERT OR REPLACE INTO nodes (id, name, is_me) VALUES (?, ?, ?)",
+            statement -> {
+                statement.setString(1, node.getId().toString());
+                statement.setString(2, node.getName());
+                statement.setInt(3, node.isMe() ? 1 : 0);
+            }
+        );
+        conn.commit();
+    }
+
+    public Node getMyNode() throws SQLException {
+        return runQuery(
+            "SELECT id, name FROM nodes WHERE is_me=1",
+            resultSet -> {
+               if (resultSet.next()) {
+                   return new Node(
+                       UUID.fromString(resultSet.getString(1)),
+                       resultSet.getString(2),
+                       true
+                   );
+               } else {
+                   return null;
+               }
+            });
+    }
+
+    public static void tryMigrate() throws Exception {
+        Class.forName("org.sqlite.JDBC");
+
         try {
-            try (Metadatabase db = new Metadatabase()) {
+            try (Database db = new Database()) {
                 db.migrate();
-                return true;
             } catch (Exception e) {
                 Log.fatal("Could not run migrations.", e);
-                return false;
+                throw e;
             }
         } catch (Exception e) {
             Log.fatal("Could not connect to database to run migrations.", e);
-            return false;
+            throw e;
         }
     }
 
@@ -64,12 +109,14 @@ public class Metadatabase implements AutoCloseable {
         String migration1 =
             "CREATE TABLE nodes (" +
                 "id TEXT NOT NULL PRIMARY KEY," +
-                "name TEXT NOT NULL);\n" +
+                "name TEXT NOT NULL," +
+                "is_me INT NOT NULL);\n" +
 
             "CREATE TABLE file_metadatas (" +
-                "version INT PRIMARY KEY AUTOINCREMENT NOT NULL," +
+                "version INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL," +
                 "name TEXT NOT NULL," +
                 "dir TEXT NOT NULL," +
+                "size INT NOT NULL," +
                 "created INT NOT NULL," +
                 "modified INT NOT NULL," +
                 "checksum TEXT NOT NULL);\n" +
@@ -89,7 +136,13 @@ public class Metadatabase implements AutoCloseable {
                 "source_node TEXT," +
                 "destination_node TEXT," +
                 "version INT," +
-                "finished TEXT);\n";
+                "finished TEXT);\n" +
+
+            "CREATE TABLE config_log (" +
+                "version INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT," +
+                "id TEXT NOT NULL," +
+                "type TEXT NOT NULL," +
+                "data TEXT NOT NULL);\n";
 
         runMigrations(new Migration[] {
             new Migration(1, migration1)
@@ -128,6 +181,25 @@ public class Metadatabase implements AutoCloseable {
             "SELECT 1 FROM migrations WHERE version=?",
             statement -> statement.setInt(1, version),
             resultSet -> resultSet.next());
+    }
+
+    public NodeCollection[] getNodeCollections(UUID nodeId) throws SQLException {
+        return runParameterizedQuery(
+            "SELECT id, collection, path FROM node_collections WHERE node=?",
+            statement -> statement.setString(1, nodeId.toString()),
+            resultSet -> {
+                ArrayList<NodeCollection> result = new ArrayList<NodeCollection>();
+                while (resultSet.next()) {
+                    result.add(new NodeCollection(
+                        UUID.fromString(resultSet.getString(1)),
+                        nodeId,
+                        UUID.fromString(resultSet.getString(2)),
+                        resultSet.getString(3)
+                    ));
+                }
+                return result.toArray(new NodeCollection[result.size()]);
+            }
+        );
     }
 
     private int runCmd(String sql) throws SQLException {
@@ -220,10 +292,10 @@ public class Metadatabase implements AutoCloseable {
             },
             resultSet -> {
                 if (resultSet.next()) {
-                    long size = resultSet.getLong(0);
-                    long created = resultSet.getLong(1);
-                    long modified = resultSet.getLong(2);
-                    String checksum = resultSet.getString(3);
+                    long size = resultSet.getLong(1);
+                    long created = resultSet.getLong(2);
+                    long modified = resultSet.getLong(3);
+                    String checksum = resultSet.getString(4);
                     return new FileMetadata(dir, name, size, created, modified, checksum);
                 } else {
                     return null;
@@ -257,7 +329,7 @@ public class Metadatabase implements AutoCloseable {
                 statement.setLong(3, metadata.getSize());
                 statement.setLong(4, metadata.getCreated());
                 statement.setLong(5, metadata.getModified());
-                statement.setString(6, metadata.getChecksum());
+                statement.setString(6, "asdf"); //
             }
         );
     }
