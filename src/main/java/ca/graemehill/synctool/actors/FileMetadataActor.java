@@ -3,10 +3,15 @@ package ca.graemehill.synctool.actors;
 import akka.actor.AbstractActor;
 import akka.actor.ActorRef;
 import akka.actor.Props;
+import ca.graemehill.synctool.Checksum;
 import ca.graemehill.synctool.Log;
 import ca.graemehill.synctool.Database;
 import ca.graemehill.synctool.Sys;
 import ca.graemehill.synctool.model.FileMetadata;
+
+import java.io.IOException;
+import java.nio.file.Paths;
+import java.security.NoSuchAlgorithmException;
 
 public class FileMetadataActor extends AbstractActor {
     private ActorRef syncActor;
@@ -33,13 +38,26 @@ public class FileMetadataActor extends AbstractActor {
             try (Database db = new Database()) {
                 FileMetadata existingMetadata = db.getFileMetadata(newMetadata.getName(), newMetadata.getDir());
                 if (!closeEnough(existingMetadata, newMetadata)) {
-                    db.replaceFileMetadata(newMetadata);
+                    FileMetadata newMetadataWithChecksum = getMetadataWithChecksum(newMetadata);
+                    db.replaceFileMetadata(newMetadataWithChecksum);
                     syncActor.tell(new SyncActor.FileReadyToSync(newMetadata), getSelf());
                 }
             }
         } catch (Exception e) {
             Log.error("onFileDiscovered failed", e);
         }
+    }
+
+    private FileMetadata getMetadataWithChecksum(FileMetadata without) throws NoSuchAlgorithmException, IOException {
+        String filePath = Paths.get(without.getDir(), without.getName()).toString();
+        Checksum checksum = Checksum.calc(filePath);
+        return new FileMetadata(
+            without.getDir(),
+            without.getName(),
+            without.getSize(),
+            without.getCreated(),
+            without.getModified(),
+            checksum == null ? null : checksum.getString());
     }
 
     private boolean closeEnough(FileMetadata a, FileMetadata b) {

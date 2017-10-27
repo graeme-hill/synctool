@@ -6,7 +6,8 @@ public class Log {
     }
 
     public static void fatal(String msg, Exception e) {
-        System.out.println("FATAL: " + msg + "\n" + e.toString());
+        System.out.println("FATAL: " + msg);
+        e.printStackTrace();
     }
 
     public static void error(String msg) {
@@ -14,7 +15,8 @@ public class Log {
     }
 
     public static void error(String msg, Exception e) {
-        System.out.println("ERROR: " + msg + "\n" + e.toString());
+        System.out.println("ERROR: " + msg);
+        e.printStackTrace();
     }
 
     public static void warning(String msg) {

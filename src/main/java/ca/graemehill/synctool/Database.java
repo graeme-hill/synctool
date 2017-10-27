@@ -119,7 +119,7 @@ public class Database implements AutoCloseable {
                 "size INT NOT NULL," +
                 "created INT NOT NULL," +
                 "modified INT NOT NULL," +
-                "checksum TEXT NOT NULL);\n" +
+                "checksum TEXT NULL);\n" +
 
             "CREATE TABLE collections (" +
                 "id TEXT PRIMARY KEY NOT NULL," +
@@ -329,7 +329,7 @@ public class Database implements AutoCloseable {
                 statement.setLong(3, metadata.getSize());
                 statement.setLong(4, metadata.getCreated());
                 statement.setLong(5, metadata.getModified());
-                statement.setString(6, "asdf"); //
+                statement.setString(6, metadata.getChecksum());
             }
         );
     }
