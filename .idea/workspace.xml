@@ -5,9 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="855e68ce-833a-408c-bfd7-39b40f182141" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/ca/graemehill/synctool/Database.java" afterPath="$PROJECT_DIR$/src/main/java/ca/graemehill/synctool/Database.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/ca/graemehill/synctool/Log.java" afterPath="$PROJECT_DIR$/src/main/java/ca/graemehill/synctool/Log.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/ca/graemehill/synctool/actors/FileMetadataActor.java" afterPath="$PROJECT_DIR$/src/main/java/ca/graemehill/synctool/actors/FileMetadataActor.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/ca/graemehill/synctool/actors/ScanActor.java" afterPath="$PROJECT_DIR$/src/main/java/ca/graemehill/synctool/actors/ScanActor.java" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <ignored path="$PROJECT_DIR$/target/" />
@@ -22,16 +20,16 @@
     <splitter split-orientation="vertical" split-proportion="0.5">
       <split-first>
         <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-          <file leaf-file-name="ScanActor.java" pinned="false" current-in-tab="false">
+          <file leaf-file-name="ScanActor.java" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/src/main/java/ca/graemehill/synctool/actors/ScanActor.java">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="72">
-                  <caret line="30" column="31" lean-forward="true" selection-start-line="30" selection-start-column="31" selection-end-line="30" selection-end-column="31" />
+                <state relative-caret-position="342">
+                  <caret line="69" column="77" lean-forward="false" selection-start-line="69" selection-start-column="77" selection-end-line="69" selection-end-column="77" />
                   <folding>
-                    <element signature="e#3021#3022#0" expanded="true" />
-                    <element signature="e#3081#3082#0" expanded="true" />
-                    <element signature="e#3134#3135#0" expanded="true" />
-                    <element signature="e#3179#3180#0" expanded="true" />
+                    <element signature="e#3079#3080#0" expanded="true" />
+                    <element signature="e#3139#3140#0" expanded="true" />
+                    <element signature="e#3192#3193#0" expanded="true" />
+                    <element signature="e#3237#3238#0" expanded="true" />
                   </folding>
                 </state>
               </provider>
@@ -52,8 +50,18 @@
           <file leaf-file-name="FileMetadataActor.java" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/src/main/java/ca/graemehill/synctool/actors/FileMetadataActor.java">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="756">
+                <state relative-caret-position="918">
                   <caret line="67" column="24" lean-forward="true" selection-start-line="67" selection-start-column="24" selection-end-line="67" selection-end-column="24" />
+                  <folding />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="SyncActor.java" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/src/main/java/ca/graemehill/synctool/actors/SyncActor.java">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="72">
+                  <caret line="7" column="13" lean-forward="false" selection-start-line="7" selection-start-column="13" selection-end-line="7" selection-end-column="13" />
                   <folding />
                 </state>
               </provider>
@@ -97,7 +105,7 @@
               </provider>
             </entry>
           </file>
-          <file leaf-file-name="Checksum.java" pinned="false" current-in-tab="true">
+          <file leaf-file-name="Checksum.java" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/src/main/java/ca/graemehill/synctool/Checksum.java">
               <provider selected="true" editor-type-id="text-editor">
                 <state relative-caret-position="453">
@@ -130,16 +138,6 @@
               <provider selected="true" editor-type-id="text-editor">
                 <state relative-caret-position="360">
                   <caret line="28" column="0" lean-forward="false" selection-start-line="28" selection-start-column="0" selection-end-line="28" selection-end-column="0" />
-                  <folding />
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file leaf-file-name="pom.xml" pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/pom.xml">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="422">
-                  <caret line="30" column="21" lean-forward="false" selection-start-line="30" selection-start-column="21" selection-end-line="30" selection-end-column="21" />
                   <folding />
                 </state>
               </provider>
@@ -289,13 +287,13 @@
         <option value="$PROJECT_DIR$/src/main/java/ca/graemehill/synctool/Collections.java" />
         <option value="$PROJECT_DIR$/src/main/java/ca/graemehill/synctool/Sys.java" />
         <option value="$PROJECT_DIR$/src/main/java/ca/graemehill/synctool/Scan.java" />
-        <option value="$PROJECT_DIR$/src/main/java/ca/graemehill/synctool/actors/ScanActor.java" />
         <option value="$PROJECT_DIR$/src/test/java/ca/graemehill/synctool/TestScanner.java" />
         <option value="$PROJECT_DIR$/src/main/java/ca/graemehill/synctool/Main.java" />
         <option value="$PROJECT_DIR$/src/main/java/ca/graemehill/synctool/Log.java" />
         <option value="$PROJECT_DIR$/src/main/java/ca/graemehill/synctool/actors/FileMetadataActor.java" />
         <option value="$PROJECT_DIR$/src/main/java/ca/graemehill/synctool/Database.java" />
         <option value="$PROJECT_DIR$/src/main/java/ca/graemehill/synctool/Checksum.java" />
+        <option value="$PROJECT_DIR$/src/main/java/ca/graemehill/synctool/actors/ScanActor.java" />
       </list>
     </option>
   </component>
@@ -816,16 +814,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/ca/graemehill/synctool/actors/SyncActor.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="126">
-          <caret line="7" column="13" lean-forward="false" selection-start-line="7" selection-start-column="13" selection-end-line="7" selection-end-column="13" />
-          <folding>
-            <element signature="imports" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/ca/graemehill/synctool/actors/ConfigActor.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="504">
@@ -961,29 +949,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/ca/graemehill/synctool/Scan.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="342">
-          <caret line="19" column="0" lean-forward="false" selection-start-line="19" selection-start-column="0" selection-end-line="19" selection-end-column="0" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/ca/graemehill/synctool/actors/ScanActor.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="72">
-          <caret line="30" column="31" lean-forward="true" selection-start-line="30" selection-start-column="31" selection-end-line="30" selection-end-column="31" />
-          <folding>
-            <element signature="e#3021#3022#0" expanded="true" />
-            <element signature="e#3081#3082#0" expanded="true" />
-            <element signature="e#3134#3135#0" expanded="true" />
-            <element signature="e#3179#3180#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/ca/graemehill/synctool/Log.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="450">
@@ -996,14 +961,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="360">
           <caret line="28" column="0" lean-forward="false" selection-start-line="28" selection-start-column="0" selection-end-line="28" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/ca/graemehill/synctool/actors/FileMetadataActor.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="756">
-          <caret line="67" column="24" lean-forward="true" selection-start-line="67" selection-start-column="24" selection-end-line="67" selection-end-column="24" />
           <folding />
         </state>
       </provider>
@@ -1030,6 +987,45 @@
             <element signature="e#391#392#0" expanded="true" />
             <element signature="e#424#425#0" expanded="true" />
             <element signature="e#469#470#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/ca/graemehill/synctool/actors/FileMetadataActor.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="918">
+          <caret line="67" column="24" lean-forward="true" selection-start-line="67" selection-start-column="24" selection-end-line="67" selection-end-column="24" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/ca/graemehill/synctool/actors/SyncActor.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="72">
+          <caret line="7" column="13" lean-forward="false" selection-start-line="7" selection-start-column="13" selection-end-line="7" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/ca/graemehill/synctool/Scan.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="342">
+          <caret line="19" column="0" lean-forward="false" selection-start-line="19" selection-start-column="0" selection-end-line="19" selection-end-column="0" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/ca/graemehill/synctool/actors/ScanActor.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="342">
+          <caret line="69" column="77" lean-forward="false" selection-start-line="69" selection-start-column="77" selection-end-line="69" selection-end-column="77" />
+          <folding>
+            <element signature="e#3079#3080#0" expanded="true" />
+            <element signature="e#3139#3140#0" expanded="true" />
+            <element signature="e#3192#3193#0" expanded="true" />
+            <element signature="e#3237#3238#0" expanded="true" />
           </folding>
         </state>
       </provider>

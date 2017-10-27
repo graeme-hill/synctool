@@ -65,9 +65,9 @@ public class ScanActor extends AbstractActor {
         Path path = file.toPath();
         try {
             if (depth < 1) {
-                Files.walk(file.toPath()).forEach(this::consumeFile);
+                Files.walk(file.toPath()).filter(Files::isRegularFile).forEach(this::consumeFile);
             } else {
-                Files.walk(file.toPath(), depth).forEach(this::consumeFile);
+                Files.walk(file.toPath(), depth).filter(Files::isRegularFile).forEach(this::consumeFile);
             }
         } catch (IOException e) {
             Log.error("scanRecursive failed for path " + path.toString(), e);
